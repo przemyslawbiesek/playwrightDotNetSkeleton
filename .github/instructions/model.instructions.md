@@ -29,11 +29,6 @@ public class PrescriptionInfo
 - Models represent data structures from UI or API
 - Keep models simple and focused on data
 
-### Subdirectories
-- `Model/Appointments/` - Appointment-related models
-- `Model/MessagingService/` - Messaging models
-- `Model/Mongo/` - MongoDB document models
-- `Model/Translations/` - Translation/localization models
 
 ### Naming Conventions
 - Use descriptive names ending with `Model` or specific domain name

@@ -42,3 +42,24 @@ public class ExamplePage : BasePage
 - Use descriptive async method names ending with `Async`
 - Examples: `FillUsernameAsync()`, `ClickSubmitButtonAsync()`, `NavigateAsync()`
 - Methods should be atomic and represent single user actions
+
+### Accessibility Tracking (MANDATORY)
+**REQUIRED** - Add `await TrackAccessibilityAsync(Page)` after:
+- Page navigation
+- Modal/dialog opening
+- Dynamic content loading
+- Significant page state changes
+
+```csharp
+public async Task NavigateAsync()
+{
+    await Page.GotoAsync("https://example.com");
+    await TrackAccessibilityAsync(Page); // REQUIRED!
+}
+
+public async Task OpenModalAsync()
+{
+    await _openModalButton.ClickAsync();
+    await TrackAccessibilityAsync(Page); // REQUIRED!
+}
+```

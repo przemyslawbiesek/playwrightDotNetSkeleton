@@ -64,48 +64,58 @@ var user = new UserDataBuilder()
 - Use builders in step definitions for test data setup
 - Provide multiple `With*` methods for flexibility
 - Consider random data generation for unique values
-# Page Object Instructions
 
-## Applies to: `test/Playwright.E2ETests/Pages/**`
-
-### Page Object Pattern Standards
-
-#### Class Structure
+### Integration with Tests
 ```csharp
-public class ExamplePage : BasePage
+// In step definitions
+[Given(@"I have a test user")]
+public void GivenIHaveATestUser()
 {
-    private readonly ILocator _usernameField;
-    private readonly ILocator _submitButton;
-
-    public ExamplePage(IPage page) : base(page)
-    {
-        _usernameField = page.Locator("[data-testid='username']");
-        _submitButton = page.GetByRole(AriaRole.Button, new() { Name = "Submit" });
-    }
-
-    public async Task FillUsernameAsync(string username)
-    {
-        await _usernameField.FillAsync(username);
-    }
+    var user = new UserDataBuilder()
+        .WithUsername($"testuser_{Guid.NewGuid()}")
+        .Build();
+    
+    _context.Set("user", user);
 }
 ```
 
-### Key Rules
-- **Always check if PageObject exists before creating new ones**
-- Initialize all locators in constructor as `ILocator` fields
-- Methods should represent user actions on the page (not assertions)
-- Use private readonly fields with underscore prefix for locators
-- Each unique URL requires separate page object class
-- Inherit from `BasePage`
+### Advanced Patterns
+```csharp
+// Builder with method chaining for complex objects
+public class MessageDataBuilder
+{
+    private string _subject = "Default Subject";
+    private string _body = "Default Body";
+    private DateTime _sendDate = DateTime.Now;
+    private List<string> _recipients = new();
 
-### Selector Preferences (in priority order)
-1. **data-testid attributes**: `page.Locator("[data-testid='submit-button']")`
-2. **Role-based selectors**: `page.GetByRole(AriaRole.Button, new() { Name = "Submit" })`
-3. **Semantic selectors**: `page.GetByLabel("Username")`
-4. **CSS selectors**: `page.Locator("#submit-btn")`
+    public MessageDataBuilder WithSubject(string subject)
+    {
+        _subject = subject;
+        return this;
+    }
 
-### Method Naming
-- Use descriptive async method names ending with `Async`
-- Examples: `FillUsernameAsync()`, `ClickSubmitButtonAsync()`, `NavigateAsync()`
-- Methods should be atomic and represent single user actions
+    public MessageDataBuilder WithRecipients(params string[] recipients)
+    {
+        _recipients.AddRange(recipients);
+        return this;
+    }
 
+    public MessageDataBuilder SentYesterday()
+    {
+        _sendDate = DateTime.Now.AddDays(-1);
+        return this;
+    }
+
+    public MessageModel Build()
+    {
+        return new MessageModel
+        {
+            Subject = _subject,
+            Body = _body,
+            SendDate = _sendDate,
+            Recipients = _recipients
+        };
+    }
+}
+```
