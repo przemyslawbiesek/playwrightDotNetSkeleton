@@ -37,6 +37,7 @@
     <Folder Include="Browser\"/>
     <Folder Include="Configuration\"/>
     <Folder Include="Context\"/>
+    <Folder Include="Model\" />
     <Folder Include="Resources\"/>
   </ItemGroup>
 

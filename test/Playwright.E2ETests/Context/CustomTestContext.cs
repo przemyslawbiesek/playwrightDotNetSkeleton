@@ -16,12 +16,7 @@ public class CustomTestContext
     {
         AccessibilityHelper,
         AccessibilityFailures,
-        ScannedPageUrls,
-        Context,
-        LoginUser,
-        Language,
-        PatientDetails,
-        InitialTabCount
+        ScannedPageUrls
     }
 
     private readonly Dictionary<Keys, object> _data;
