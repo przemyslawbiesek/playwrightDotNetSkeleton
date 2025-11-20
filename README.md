@@ -1,437 +1,403 @@
-# PlaywrightTests
+# Playwright .NET Test Automation Framework
 
-This project contains automated tests for the NHS Wales Messages API and NHS Wales web application using:
+> A comprehensive BDD test automation framework using ReqnRoll, Playwright, and C# with built-in accessibility testing and enterprise reporting.
 
-- [Reqnroll](https://reqnroll.net/) - for BDD test scenarios in Gherkin syntax
-- [Playwright](https://playwright.dev/dotnet/) - for UI and API testing
-- [NUnit](https://nunit.org/) - as the test framework
-- [MongoDB](https://www.mongodb.com/) - for test data management
+[![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
+[![Playwright](https://img.shields.io/badge/Playwright-.NET-green.svg)](https://playwright.dev/dotnet/)
+[![ReqnRoll](https://img.shields.io/badge/ReqnRoll-BDD-orange.svg)](https://reqnroll.net/)
 
-## Project Structure
+## 📋 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Configuration](#configuration)
+- [Running Tests](#running-tests)
+- [Reports & Accessibility](#reports--accessibility)
+- [Architecture](#architecture)
+- [Contributing](#contributing)
 
-The solution consists of one project:
+---
 
-- `Playwright.E2ETests`: Main test project containing automated tests using Reqnroll and Playwright
+## 🎯 Overview
 
-## Prerequisites
+- **[ReqnRoll](https://reqnroll.net/)** - BDD test scenarios in Gherkin syntax (SpecFlow successor)
+- **[Playwright](https://playwright.dev/dotnet/)** - Modern, reliable browser automation for UI and API testing
+- **[NUnit](https://nunit.org/)** - Powerful test framework with parallel execution
+- **Allure** - Rich HTML reports with screenshots, traces, and accessibility results
+- **Axe-core** - Automated WCAG accessibility compliance testing
 
-- .NET 8.0 SDK
-- JetBrains Rider 2024
-- Node.js (v16 or higher) and npm - Required for accessibility testing with axe-html-reporter
+The framework implements **Page Object Model**, **separation of concerns**, and **accessibility-first testing** approach.
 
-## Getting Started
+---
 
-1. Clone the repository
-2. Open the solution file `PlaywrightTests.sln` in Visual Studio/Rider
-3. Configure environment settings (see Configuration section below)
-4. Install Node.js dependencies for accessibility testing
-5. Install Playwright browsers
-6. Build the solution
-7. Run tests
+## ✨ Features
 
-### Configuration
+✅ **BDD Support** - Write tests in business-readable Gherkin syntax  
+✅ **Multi-Browser** - Chrome, Firefox, Safari, Edge support  
+✅ **Mobile Emulation** - Test responsive designs with device emulation  
+✅ **Accessibility Testing** - Automatic WCAG compliance checking with Axe-core  
+✅ **Rich Reporting** - Allure reports with screenshots, traces, and accessibility results  
+✅ **Parallel Execution** - Run tests in parallel for faster feedback  
+✅ **Environment Management** - .env-based configuration for multiple environments  
+✅ **API Testing** - Built-in support for API testing alongside UI tests  
+✅ **CI/CD Ready** - Configured for GitHub Actions with artifact storage
 
-This project uses `.env` files for configuration. To get started:
+---
 
+## 📦 Prerequisites
+
+- **.NET 8.0 SDK** or higher
+- **JetBrains Rider 2024** (or Visual Studio 2022, VS Code)
+- **Node.js 18+** (for accessibility testing with axe-html-reporter)
+- **PowerShell** (for Playwright browser installation)
+- **Git**
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone Repository
 ```bash
-# Copy the example configuration
-cp .env.example .env
-
-# Edit .env with your local settings
-# See CONFIGURATION.md for all available options
+git clone <repository-url>
+cd playwrightDotNetSkeleton
 ```
 
-**Key configuration files:**
-- `.env` - Your local configuration (git-ignored)
-- `.env.example` - Template with all available options
-- `.env.uat` - UAT environment configuration
-
-For complete configuration documentation, see [CONFIGURATION.md](CONFIGURATION.md).
-
-
-### Installing Node.js Dependencies
-
-For accessibility testing features, install the required npm packages:
+### 2. Install Dependencies
 
 ```bash
+# Restore .NET packages
+dotnet restore
+
+# Install Node.js dependencies for accessibility testing
 npm install
 ```
 
 This will install:
 - `axe-html-reporter` - Generates detailed HTML reports for accessibility violations
-6. Setup environment variables
 
-### Installing Playwright browsers
+### 3. Install Playwright Browsers
 
-If you have powershell, run command from root project directory:
-
-`pwsh bin/Debug/netX/playwright.ps1 install`
-
-If not try to install powershell:
-
-`brew install powershell/tap/powershell`
-
-If it does not work, try with go:
-
-`brew install go`
-
-Then install browsers:
-
-`go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps`
-
-
-## Main Project Structure
-
-The `Playwright.E2ETests` project is organized into the following directories:
-
-### Core Test Infrastructure
-- `Browser/`: Browser configurations and management
-- `Configuration/`: Environment settings and test configuration management
-- `Context/`: Reqnroll test context classes for data sharing between steps
-- `Hooks/`: Reqnroll hooks for setup and teardown operations
-
-### Test Features and Implementation
-- `Features/`: BDD feature files organized by test type:
-  - `Features/Api/`: API testing scenarios including Messages API endpoints
-  - `Features/UI/`: User interface testing scenarios
-- `Steps/`: Step definitions mapping Gherkin steps to C# implementation:
-  - `Steps/Api/`: API step definitions
-  - `Steps/UI/`: UI step definitions
-
-### Test Support Components
-- `Pages/`: Page Object Model classes for UI interactions
-  - `Pages/NhsWalesPages/`: NHS Wales specific page objects
-- `Clients/`: Service clients for external systems:
-  - API clients (`BaseApiService`, `MessagesApiService`)
-  - Database clients (`MongoDbService`)
-- `Model/`: Data models and DTOs:
-  - `Model/MessagingService/`: Models for Messages API (requests, responses, entities)
-  - `Model/Mongo/`: MongoDB document models
-  - `Model/Translations/`: Translation and localization models
-- `DataBuilders/`: Test data builders for creating test objects
-- `Validators/`: Assertion and validation logic
-- `Utils/`: Utility classes and helper methods
-- `Resources/`: Test configuration files and static resources
-- `Reports/`: Generated test reports and artifacts
-
-## Test Coverage
-
-### API Testing
-The project includes comprehensive API tests for the NHS Wales Messages API covering:
-
-#### Messages Endpoint (`/users/me/messages`)
-- **GET**: Retrieve messages with summary/sender filtering
-- **POST**: Create new messages 
-- **PATCH**: Update message read status
-- **Response Scenarios**: 200 (success), 204 (no content), 400 (bad request), 401 (unauthorized)
-
-#### Message by ID Endpoint (`/users/me/messages/{id}`)
-- **GET**: Retrieve specific message by ID
-- **Response Scenarios**: 200 (success), 400 (invalid ID), 401 (unauthorized), 404 (not found)
-
-#### Senders Endpoint (`/users/me/messages/senders`)
-- **GET**: Retrieve unique message senders with unread counts
-- **Response Scenarios**: 200 (success), 204 (no content), 401 (unauthorized)
-
-### UI Testing
-- NHS Wales web application user interface testing
-- Organ donation decision workflows
-- HTTP stub testing for development scenarios
-
-### Authentication Testing
-- Bearer token authentication validation
-- Invalid token handling
-- Missing token scenarios
-
-## Running Tests
-
-### Quick Start Commands
-
-Run all tests:
+If you have PowerShell:
 ```bash
+pwsh test/Playwright.E2ETests/bin/Debug/net8.0/playwright.ps1 install
+```
+
+If not, install PowerShell first:
+```bash
+brew install powershell/tap/powershell
+```
+
+Alternative with Go:
+```bash
+brew install go
+go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+```
+
+### 4. Configure Environment
+
+Copy the example configuration:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your local settings (see [Configuration](#configuration) section for details).
+
+### 5. Build the Solution
+```bash
+dotnet build
+```
+
+### 7. View Reports
+```bash
+# Generate and open Allure report
+cd test/Playwright.E2ETests/bin/Debug/net8.0
+allure generate --clean
+allure open allure-report
+```
+
+---
+
+## 📁 Project Structure
+
+The solution consists of one main project:
+
+### `Playwright.E2ETests` - Main Test Project
+
+```
+test/Playwright.E2ETests/
+├── Features/                    # BDD feature files (.feature)
+│   ├── UI/                      # UI test scenarios
+│   └── API/                     # API test scenarios
+├── Pages/                       # Page Object Model classes
+│   ├── ParaBankPages/          # ParaBank pages
+│   ├── WPPages/                # WP.pl pages
+│   └── BasePage.cs             # Base page with common functionality
+├── Steps/                       # Step definitions (Gherkin → C#)
+│   ├── UI/                      # UI step definitions
+│   └── API/                     # API step definitions
+├── Validators/                  # Assertion and validation classes
+│   ├── AccessibilityValidator.cs
+│   ├── ParaBankValidator.cs
+│   └── WpPocztaValidator.cs
+├── Model/                       # Data models and DTOs
+├── DataBuilders/               # Test data builders (Builder pattern)
+├── Context/                     # Test context classes
+│   └── CustomTestContext.cs   # Data sharing between steps
+├── Utils/                       # Utility classes and helpers
+│   ├── AccessibilityHelper.cs  # Axe-core integration
+│   └── AccessibilityPageEventListener.cs
+├── Clients/                     # API service clients
+├── Configuration/              # Configuration management
+│   ├── BrowserConfiguration.cs
+│   ├── CommonConfiguration.cs
+│   └── ConfigurationManager.cs # Loads .env files
+├── Hooks/                       # ReqnRoll hooks (setup/teardown)
+│   ├── Hook.cs
+│   ├── Setup/
+│   └── Cleanup/
+├── Browser/                     # Browser management
+│   └── BrowserManager.cs
+└── Resources/                   # Test resources (empty after .env migration)
+```
+
+---
+
+## ⚙️ Configuration
+
+The framework uses **`.env` files** for all configuration (migrated from JSON).
+
+### Environment Files
+
+- **`.env`** - Your local configuration (git-ignored, **never commit!**)
+- **`.env.example`** - Template with all available options
+- **`.env.uat`** - UAT environment configuration
+- **`.env.staging`** - Staging environment (optional)
+- **`.env.production`** - Production environment (optional)
+
+### Configuration Variables
+
+#### Environment Settings
+```env
+ENVIRONMENT=local                    # Environment name (local, uat, staging, production)
+```
+
+#### Browser Configuration
+```env
+# Option 1: Predefined browser configuration
+BROWSER_CONFIGURATION=chrome         # chrome, firefox, safari, edge,
+                                     # safari-iphone-13, safari-iphone-13-landscape
+                                     # chrome-galaxy-s15, chrome-galaxy-s15-landscape
+
+# Option 2: Custom browser configuration (overrides BROWSER_CONFIGURATION)
+BROWSER=Chrome                       # Chrome, Firefox, Safari, Edge
+DEVICE=                              # Empty for desktop, or device name (e.g., "iPhone 13")
+VIEWPORT_WIDTH=1920                  # Browser width in pixels
+VIEWPORT_HEIGHT=1080                 # Browser height in pixels
+```
+
+#### Common Settings
+```env
+SCREENSHOTS_DIRECTORY=Screenshots                    # Screenshot storage
+ACCESSIBILITY_DIRECTORY=AccessibilityReport         # Accessibility reports
+TRACES_DIRECTORY=Traces                             # Playwright traces
+ACCESSIBILITY_TAGS=wcag2a,wcag2aa,wcag21a,wcag21aa # WCAG rules to check
+HEADLESS=false                                      # Run in headless mode (true/false)
+AUTO_ACCESSIBILITY_TRACKING=true                    # Auto accessibility checks
+```
+
+### Switching Environments
+
+```bash
+# Copy environment-specific file
+cp .env.uat .env
+
+# Or set environment variable
+export ENVIRONMENT=uat
 dotnet test
 ```
 
-Run only API tests:
-```bash
-dotnet test --filter "Category=Api"
-```
+### Predefined Browser Configurations
 
-Run only UI tests:
-```bash
-dotnet test --filter "Category=UI"
-```
+| Configuration | Browser | Viewport/Device | Use Case |
+|--------------|---------|----------------|----------|
+| `chrome` | Chrome | 1920x1080 | Desktop testing |
+| `firefox` | Firefox | 1920x1080 | Cross-browser |
+| `safari` | Safari | 1920x1080 | macOS testing |
+| `edge` | Edge | 1920x1080 | Windows testing |
+| `safari-iphone-13` | Safari | iPhone 13 | Mobile iOS |
+| `safari-iphone-13-landscape` | Safari | iPhone 13 landscape | Mobile iOS landscape |
+| `chrome-galaxy-s15` | Chrome | Galaxy S9+ | Mobile Android |
+| `chrome-galaxy-s15-landscape` | Chrome | Galaxy S9+ landscape | Mobile Android landscape |
 
-Run tests with specific tags:
-```bash
-dotnet test --filter "Category=stubs"
-```
+### Configuration Security
 
-Run specific feature tests:
+⚠️ **Important Security Notes:**
+- **NEVER commit `.env` or `.env.local`** to version control
+- These files may contain sensitive credentials
+- Only commit environment-specific files (`.env.uat`, `.env.staging`) if they don't contain secrets
+- The `.env` file is already in `.gitignore`
+
+---
+
+## 🧪 Running Tests
+
+### Basic Commands
+
 ```bash
+# Run all tests
+dotnet test
+
+# Run specific category
+dotnet test --filter "Category=smoke"
+dotnet test --filter "Category=regression"
+dotnet test --filter "Category=api"
+dotnet test --filter "Category=ui"
+
+# Run specific feature
+dotnet test --filter "Name~ParaBankNavigation"
 dotnet test --filter "Name~MessagesApi"
 dotnet test --filter "Name~Senders"
+
+# Run multiple categories (OR logic)
+dotnet test --filter "Category=smoke|Category=regression"
+
+# Exclude category
+dotnet test --filter "Category!=wip"
+
+# Parallel execution
+dotnet test --parallel
+
+# Headless mode
+HEADLESS=true dotnet test
 ```
-
-### Test Execution Options
-
-You can run the tests using:
-- Visual Studio Test Explorer
-- JetBrains Rider test runner  
-- `dotnet test` command in terminal
-- CI/CD pipelines
-
-### Environment Configuration
-
-| Variable             | Required | Description                                                                                                   | Default |
-|---------------------|----------|---------------------------------------------------------------------------------------------------------------|---------|
-| BrowserConfiguration | No       | Browser and platform configuration. Available options in `Resources/browsers.json`                          | chrome  |
-| Headless            | No       | Run browser in headless mode                                                                                  | true    |
-| Environment         | No       | Target environment for test execution                                                                         | local   |
-| MongoDb__*          | Yes      | MongoDB connection configuration for test data management                                                     | -       |
-| MessagesApi__*      | Yes      | Messages API configuration including base URL and authentication                                              | -       |
 
 ### Parallel Execution
 
-Configure parallel test execution:
+Configure in `AssemblyInfo.cs` and `run.runsettings`:
 
-1. Edit `AssemblyInfo.cs`: `[assembly: LevelOfParallelism(4)]` 
-2. Edit `run.runsettings`: `<MaxCpuCount>4</MaxCpuCount>`
-3. Run with settings: `dotnet test --settings run.runsettings`
+```csharp
+// AssemblyInfo.cs
+[assembly: LevelOfParallelism(4)]
+```
+
+```xml
+<!-- run.runsettings -->
+<MaxCpuCount>4</MaxCpuCount>
+```
+
+Run with settings:
+```bash
+dotnet test --settings run.runsettings
+```
 
 ### Environment-Specific Execution
 
-Set environment before running tests:
 ```bash
-Environment=staging dotnet test
-Environment=production dotnet test --filter "Category=smoke"
-Accessibility analysis reports are automatically generated during UI tests when `AccessibilityHelper.Run()` is called.
-
-**Report Location:** `bin/Debug/net8.0/AccessibilityReport/[scenario]/[page]/[guid]/`
-
-**Generated Files:**
-- `accessibility-report.html` - Interactive HTML report with detailed information about all accessibility violations including:
-  - Full list of affected elements with CSS selectors
-  - HTML snippets of each failing element
-  - WCAG criteria violated
-  - Impact levels (critical, serious, moderate, minor)
-  - Fix recommendations and help links
-  - Collapsible sections for easy navigation
-- `results.json` - Raw JSON results from axe-core analysis
-
-**Features:**
-- Color-coded violations by severity
-- Click to expand/collapse violation details
-- Shows all affected elements (not just summaries)
-- Element-specific failure descriptions
-### Test Reports and Artifacts
-
-#### Allure Reports
-After test execution, generate detailed reports:
-```bash
-cd bin/Debug/net8.0
-allure generate --clean
+# UAT environment
+cp .env.uat .env
+dotnet test
 ```
-Reports are generated in `/bin/Debug/net8.0/allure-report/`
+
+---
+
+
+## 📊 Reports & Accessibility
+
+### Allure Reports
+
+Rich HTML reports with comprehensive test results:
+
+✅ **Test execution results** - Pass/Fail status with detailed steps  
+✅ **Screenshots on failures** - Automatic screenshot capture  
+✅ **Playwright traces** - Full browser interaction recording  
+✅ **Accessibility scan results** - WCAG compliance reports  
+✅ **Execution timeline** - Test duration and sequence  
+✅ **Trends and statistics** - Historical data and metrics  
+
+#### Generate and View Reports
+
+```bash
+# After test execution
+cd test/Playwright.E2ETests/bin/Debug/net8.0
+
+# Generate fresh report
+allure generate --clean
+
+# Open report in browser
+allure open allure-report
+
+# Or generate and serve in one command
+allure serve allure-results
+```
+
+**Report Locations:**
+- Allure results: `bin/Debug/net8.0/allure-results/`
+- Generated report: `bin/Debug/net8.0/allure-report/`
+
+### Accessibility Testing (MANDATORY)
+
+**Automatic WCAG compliance checking** is integrated using Axe-core.
+
+#### When to Track Accessibility
+
+**REQUIRED** after:
+- ✅ Page navigation
+- ✅ Modal opening
+- ✅ Dynamic content loading
+- ✅ Significant page state changes
+
+#### How to Track Accessibility
+
+```csharp
+// After navigation
+await _page.GotoAsync(url);
+await _page.TrackAccessibilityAsync(_page);
+
+// After modal opens
+await _openModalButton.ClickAsync();
+await _page.TrackAccessibilityAsync(_page);
+
+// After dynamic content loads
+await _page.WaitForSelectorAsync(".dynamic-content");
+await _page.TrackAccessibilityAsync(_page);
+```
+
+#### WCAG Compliance Levels
+
+The framework checks against:
+- **WCAG 2.0 Level A** (`wcag2a`)
+- **WCAG 2.0 Level AA** (`wcag2aa`)
+- **WCAG 2.1 Level A** (`wcag21a`)
+- **WCAG 2.1 Level AA** (`wcag21aa`)
+
+Configure via `ACCESSIBILITY_TAGS` in `.env` file.
 
 #### Accessibility Reports
-Accessibility analysis reports are automatically generated in:
-`bin/Debug/net8.0/AccessibilityReport/`
 
-#### Playwright Traces
-Test execution traces for debugging are stored in:
-`bin/Debug/net8.0/Traces/`
+**Individual Page Reports:**
+- Location: `bin/Debug/net8.0/AccessibilityReport/{Scenario}/{Page}/`
+- Format: Interactive HTML with detailed violations
+- Attached to Allure as: `Accessibility Report - {page_name}`
 
-View traces using: https://trace.playwright.dev/
+**Consolidated Reports:**
+- Location: `bin/Debug/net8.0/AccessibilityReport/{Scenario}/consolidated-accessibility-report.html`
+- Contains: Summary of all pages checked in a scenario
+- Attached to Allure as: `Consolidated Accessibility Report`
 
-#### Test Results
-Standard test results are stored in:
-`TestResults/` directory with timestamped folders
+**Report Features:**
+- 🔴 Color-coded severity (Critical, Serious, Moderate, Minor)
+- 📋 WCAG tags and criteria violated
+- 🔍 Affected HTML elements with CSS selectors
+- 🛠️ Remediation guidance with links to Deque University
+- 📊 Summary statistics and trends
+- 🔽 Expandable/collapsible sections
 
-
-## Key Dependencies
-
-### Core Testing Framework
-- **Reqnroll** (2.3.0) - BDD testing framework for .NET
-- **NUnit** (3.14.0) - Unit testing framework
-- **Playwright** (1.47.0) - Cross-browser automation
-
-### Assertion and Validation
-- **FluentAssertions** (6.12.1) - Fluent assertion library
-- **Then** (1.0.3) - Additional assertion extensions
-
-### External Integrations
-- **MongoDB.Driver** - MongoDB database client
-- **Azure.Identity** (1.12.1) - Azure authentication
-- **Otp.NET** (1.4.0) - One-time password generation
-
-### Utilities
-- **Newtonsoft.Json** - JSON serialization
-- **Microsoft.Extensions.Configuration** - Configuration management
-
-For a complete list of dependencies, refer to the `Playwright.E2ETests.csproj` file.
-
-## Architecture Patterns
-
-### Page Object Model (POM)
-UI tests use the Page Object pattern with:
-- `BasePage` - Common page functionality
-- Page-specific classes in `Pages/NhsWalesPages/`
-- Locator initialization in constructors
-- Action methods representing user interactions
-
-### API Service Layer
-API tests use service layer pattern with:
-- `BaseApiService` - Common HTTP functionality
-- `MessagesApiService` - Messages API specific methods
-- Authentication and error handling
-- Response validation
-
-### BDD Step Definitions
-Test steps follow clear separation:
-- `BaseStepDefinitions` - Common step functionality
-- `BaseUiStepDefinitions` - UI-specific base steps
-- Feature-specific step definition classes
-
-### Test Data Management
-- `DataBuilders` - Builder pattern for test data creation
-- `MongoDataBuilder` - Database test data setup
-- `CustomTestContext` - Data sharing between steps
-
-## Contributing
-
-1. Follow existing code patterns and naming conventions
-2. Use Page Object Model for UI interactions
-3. Implement proper error handling and validation
-4. Add comprehensive test coverage for new features
-5. Update documentation when adding new functionality
-
-For detailed coding standards, see: `test/Playwright.E2ETests/MCPContext.md`
-
-Accessibility Reports Integration with Allure
-Overview
-The accessibility reports are now fully integrated with Allure reporting. This means all accessibility checks are automatically attached to your Allure test reports, providing a comprehensive view of both functional and accessibility test results.
-
-What's Integrated
-1. Individual Page Accessibility Reports
-   When: Generated whenever an accessibility check finds violations on a page
-   Location in Allure: Attached as Accessibility Report - {page_name}
-   Format: HTML report with detailed violations, affected elements, and WCAG guidelines
-   Contains:
-   Violation severity (Critical, Serious, Moderate, Minor)
-   WCAG compliance rules violated
-   Specific HTML elements affected
-   Selectors for each failing element
-   Remediation guidance with links to Deque University
-2. Consolidated Accessibility Report
-   When: Generated at the end of each test scenario
-   Location in Allure: Attached as Consolidated Accessibility Report
-   Format: HTML report aggregating all accessibility checks from the scenario
-   Contains:
-   Summary statistics (total pages checked, violations, passes)
-   All pages tested with their individual results
-   Expandable sections for each page
-   Collapsible violation details
-   Cross-page accessibility overview
-   How It Works
-   During Test Execution
-   Page Check: When AccessibilityHelper.Run() or AccessibilityHelper.RunAndTrack() is called:
-
-Axe-core analyzes the page for WCAG violations
-If violations are found, an HTML report is generated
-The report is automatically attached to Allure with the page name
-Test Cleanup: After the scenario completes:
-
-A consolidated report is generated combining all page checks
-The consolidated report is attached to Allure
-Accessibility failures are summarized in the console
-Viewing Reports in Allure
-Run your tests as usual:
-
-dotnet test
-Generate Allure report:
-
-allure serve allure-results
-In the Allure report:
-
-Navigate to your test scenario
-Scroll to the Attachments section at the bottom
-You'll see:
-Individual page reports (if violations were found)
-Consolidated Accessibility Report (always generated if accessibility checks ran)
-Report Features
-Interactive HTML Reports
-Both individual and consolidated reports include:
-
-✅ Color-coded severity levels
-
-🔴 Critical (red)
-🟠 Serious (orange)
-🟡 Moderate (yellow)
-🟢 Minor (green)
-✅ Expandable sections - Click to expand/collapse details
-
-✅ WCAG tags - Shows which WCAG criteria are violated
-
-✅ Direct links - Links to Deque University for remediation guidance
-
-✅ HTML snippets - Shows the exact HTML causing the issue
-
-✅ CSS selectors - Provides selectors to locate failing elements
-
-✅ Summary statistics - Overall metrics at a glance
-
-Consolidated Report Benefits
-The consolidated report provides:
-
-Cross-page analysis: See which pages have issues at a glance
-Trend identification: Identify common accessibility patterns
-Quick navigation: Jump to specific pages with issues
-Executive summary: Total violations, passes, and affected pages
-File Locations
-Reports are also saved to the file system:
-
-Individual reports:
-
-bin/Debug/net8.0/AccessibilityReport/{ScenarioName}/{PageName}/accessibility-report.html
-Consolidated report:
-
-bin/Debug/net8.0/AccessibilityReport/{ScenarioName}/consolidated-accessibility-report.html
-JSON results:
-
-bin/Debug/net8.0/AccessibilityReport/{ScenarioName}/{PageName}/results.json
-Example Usage
-In Your Step Definitions
-[When(@"I navigate to the login page")]
-public async Task WhenINavigateToTheLoginPage()
-{
-await _loginPage.NavigateAsync();
-
-    // Run accessibility check and attach to Allure automatically
-    await TrackAccessibilityAsync(Page);
-}
-What Gets Attached to Allure
-For a scenario that checks 2 pages:
-
-✅ Accessibility Report - www.example.com (individual page)
-✅ Accessibility Report - login.example.com (individual page)
-✅ Consolidated Accessibility Report (all pages summary)
-Benefits
-Centralized Reporting: All test results (functional + accessibility) in one place
-Historical Tracking: Allure history shows accessibility improvements over time
-Team Visibility: Developers and QA can see accessibility status in familiar reports
-Easy Sharing: Share Allure reports with stakeholders including accessibility data
-CI/CD Integration: Works seamlessly in your existing CI/CD pipeline
-Console Output
-During test execution, you'll see:
-
+**Console Output:**
+```
 📊 Consolidated accessibility report generation completed
 ✅ Consolidated accessibility report attached to Allure
-If accessibility checks pass:
-
-✅ All functional tests passed
-✅ All accessibility checks passed
-If accessibility issues are found:
 
 ========================================
 ACCESSIBILITY CHECK SUMMARY
@@ -439,21 +405,403 @@ ACCESSIBILITY CHECK SUMMARY
 ✅ All functional tests passed
 ❌ Accessibility issues found on 2 page(s)
 ========================================
-Configuration
-The accessibility testing configuration is managed in your configuration files:
+```
 
-WCAG tags can be configured to focus on specific standards
-Severity levels can be filtered
-Reports are generated automatically - no additional configuration needed
-Troubleshooting
-If reports are not appearing in Allure:
+**Note:** Accessibility violations are **reported** but **don't fail tests** by default.
 
-Check console output - Look for warning messages about report generation
-Verify file existence - Check if HTML reports are created in the file system
-Check Allure version - Ensure Allure.Net.Commons is properly installed
-Review permissions - Ensure write access to the AccessibilityReport directory
-Next Steps
-Review accessibility reports after each test run
-Address critical and serious violations first
-Use the remediation links to learn how to fix issues
-Track progress over time using Allure's historical trends
+### Playwright Traces
+
+Full browser traces for debugging captured automatically on test failure:
+
+**Trace Contents:**
+- Network activity and requests
+- Console logs and errors
+- DOM snapshots at each step
+- Screenshots of actions
+- Action timeline with timing
+
+**Viewing Traces:**
+```bash
+# Traces saved to
+bin/Debug/net8.0/Traces/
+
+# View online
+# Navigate to: https://trace.playwright.dev/
+# Drag and drop trace.zip file
+```
+
+**Traces are automatically:**
+- Saved to `Traces/` directory
+- Attached to failed tests in Allure
+- Compressed for efficient storage
+
+---
+
+
+## 🏗️ Architecture
+
+### Page Object Model (POM)
+
+UI tests use the Page Object pattern for maintainability:
+
+```csharp
+public class LoginPage : BasePage
+{
+    private readonly ILocator _usernameField;
+    private readonly ILocator _passwordField;
+    private readonly ILocator _loginButton;
+
+    public LoginPage(IPage page) : base(page)
+    {
+        // Initialize locators using stable selectors
+        _usernameField = Page.GetByLabel("Username");
+        _passwordField = Page.GetByLabel("Password");
+        _loginButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log In" });
+    }
+
+    public async Task LoginAsync(string username, string password)
+    {
+        await _usernameField.FillAsync(username);
+        await _passwordField.FillAsync(password);
+        await _loginButton.ClickAsync();
+        
+        // Mandatory accessibility tracking after action
+        await TrackAccessibilityAsync(Page);
+    }
+}
+```
+
+**Page Object Principles:**
+- ✅ One class per unique URL
+- ✅ All locators as `ILocator` fields
+- ✅ Methods represent user actions (not assertions)
+- ✅ Inherit from `BasePage`
+- ✅ Use accessibility-first selectors: `data-testid` > `role` > `label` > CSS
+
+### Step Definitions
+
+BDD step definitions bind Gherkin to code:
+
+```csharp
+[Binding]
+public class LoginSteps : BaseUiStepDefinitions
+{
+    private readonly LoginPage _loginPage;
+
+    public LoginSteps(CustomTestContext context, IPage page) : base(context, page)
+    {
+        _loginPage = new LoginPage(page);
+    }
+
+    [When(@"I log in with username ""(.*)"" and password ""(.*)""")]
+    public async Task WhenILogIn(string username, string password)
+    {
+        await _loginPage.LoginAsync(username, password);
+    }
+
+    [Then(@"I should see the dashboard")]
+    public async Task ThenIShouldSeeTheDashboard()
+    {
+        await LoginValidator.ValidateDashboardDisplayed(Page);
+    }
+}
+```
+
+**Step Definition Principles:**
+- ✅ One class per feature
+- ✅ Use `CustomTestContext` for data sharing
+- ✅ Keep steps independent and atomic
+- ✅ No assertions in step definitions (use Validators)
+
+### Validators
+
+Separate assertion logic for clarity:
+
+```csharp
+public class LoginValidator
+{
+    public static async Task ValidateDashboardDisplayed(IPage page)
+    {
+        var welcomeMessage = page.GetByText("Welcome");
+        var dashboard = page.GetByRole(AriaRole.Main);
+        
+        // Playwright assertions
+        await Expect(welcomeMessage).ToBeVisibleAsync();
+        await Expect(dashboard).ToContainTextAsync("Dashboard");
+    }
+
+    public static void ValidateUserData(User expected, User actual)
+    {
+        // NUnit/FluentAssertions for data
+        actual.Username.Should().Be(expected.Username);
+        actual.Email.Should().Be(expected.Email);
+    }
+}
+```
+
+**Validator Principles:**
+- ✅ Static methods for easy access
+- ✅ Playwright `Expect` for web elements
+- ✅ NUnit `Assert` or `FluentAssertions` for data
+- ✅ Grouped by domain (Login, Messages, etc.)
+
+### Data Builders
+
+Builder pattern for test data creation:
+
+```csharp
+public class UserBuilder
+{
+    private string _username = "testuser";
+    private string _password = "Test123!";
+    private string _email = "test@example.com";
+
+    public UserBuilder WithUsername(string username)
+    {
+        _username = username;
+        return this;
+    }
+
+    public UserBuilder WithPassword(string password)
+    {
+        _password = password;
+        return this;
+    }
+
+    public UserBuilder WithEmail(string email)
+    {
+        _email = email;
+        return this;
+    }
+
+    public User Build() => new User
+    {
+        Username = _username,
+        Password = _password,
+        Email = _email
+    };
+}
+
+// Usage
+var user = new UserBuilder()
+    .WithUsername("john.doe")
+    .WithEmail("john@example.com")
+    .Build();
+```
+
+### API Service Layer
+
+Structured API client pattern:
+
+```csharp
+public class MessagesApiService : BaseApiService
+{
+    public MessagesApiService(string baseUrl, string apiKey)
+        : base(baseUrl)
+    {
+        _httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+    }
+
+    public async Task<List<Message>> GetMessagesAsync()
+    {
+        var response = await _httpClient.GetAsync("/users/me/messages");
+        response.EnsureSuccessStatusCode();
+        return await DeserializeAsync<List<Message>>(response);
+    }
+
+    public async Task<Message> CreateMessageAsync(CreateMessageRequest request)
+    {
+        var content = SerializeToJson(request);
+        var response = await _httpClient.PostAsync("/users/me/messages", content);
+        response.EnsureSuccessStatusCode();
+        return await DeserializeAsync<Message>(response);
+    }
+}
+```
+
+### Test Context
+
+Share data between steps using `CustomTestContext`:
+
+```csharp
+public class CustomTestContext
+{
+    public IPage Page { get; set; }
+    public IBrowser Browser { get; set; }
+    public Dictionary<string, object> ScenarioData { get; } = new();
+
+    public T Get<T>(string key) => (T)ScenarioData[key];
+    public void Set(string key, object value) => ScenarioData[key] = value;
+}
+
+// Usage in steps
+_context.Set("createdMessage", message);
+var message = _context.Get<Message>("createdMessage");
+```
+
+---
+
+## 🤝 Contributing
+
+### Code Standards
+
+✅ Follow C# coding conventions  
+✅ Use meaningful names (Page Objects, Steps, Validators)  
+✅ Keep scenarios independent and atomic  
+✅ **Add accessibility tracking to all page interactions**  
+✅ Write comprehensive commit messages  
+
+### Pull Request Process
+
+1. Create feature branch from `main`
+2. Write tests in BDD format (Given/When/Then)
+3. Ensure all tests pass locally
+4. Run accessibility checks
+5. Generate Allure report
+6. Submit PR with test report screenshots
+7. Address review comments
+
+### Testing Standards
+
+| Component | Guideline | Example |
+|-----------|-----------|---------|
+| **Page Objects** | One class per unique URL | `LoginPage`, `DashboardPage` |
+| **Step Definitions** | One class per feature | `LoginSteps`, `MessagesSteps` |
+| **Validators** | Separate assertion logic | `LoginValidator.ValidateSuccess()` |
+| **Accessibility** | Mandatory after page changes | `await TrackAccessibilityAsync(page)` |
+| **Selectors** | Priority order | `data-testid` > `role` > `label` > CSS |
+| **Test Data** | Use builders | `new UserBuilder().WithEmail().Build()` |
+
+### Coding Conventions
+
+**Naming:**
+```csharp
+// Page Objects: [Feature]Page
+public class LoginPage : BasePage
+
+// Steps: [Feature]Steps
+public class LoginSteps : BaseUiStepDefinitions
+
+// Validators: [Feature]Validator
+public class LoginValidator
+
+// Builders: [Domain]Builder  
+public class UserBuilder
+```
+
+**File Organization:**
+- Group related classes together
+- One public class per file
+- Match filename to class name
+- Use folders for domain grouping
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**❌ Browsers not installed:**
+```bash
+pwsh test/Playwright.E2ETests/bin/Debug/net8.0/playwright.ps1 install
+```
+
+**❌ Tests timing out:**
+- Increase timeout in `.runsettings`
+- Check network connectivity
+- Verify application is accessible
+- Check for slow database queries
+
+**❌ Accessibility failures:**
+- Review `AccessibilityReport/` directory
+- Check Allure report attachments
+- Violations don't fail tests by default
+- Use remediation links for fixes
+
+**❌ Configuration not loading:**
+- Verify `.env` exists in workspace root
+- Check variable names match exactly (case-sensitive)
+- Ensure format: `KEY=value` (no spaces around `=`)
+- Check for trailing whitespace
+
+**❌ Parallel execution issues:**
+- Reduce `LevelOfParallelism` in `AssemblyInfo.cs`
+- Check for shared state between tests
+- Ensure tests are truly independent
+- Use `CustomTestContext` for isolation
+
+**❌ NuGet restore fails:**
+```bash
+dotnet clean
+dotnet restore --force
+dotnet build
+```
+
+**❌ Allure report not generating:**
+```bash
+# Check Allure is installed
+allure --version
+
+# Install if needed
+npm install -g allure-commandline
+
+# Regenerate report
+cd test/Playwright.E2ETests/bin/Debug/net8.0
+rm -rf allure-report
+allure generate --clean
+```
+
+---
+
+## 📚 Additional Resources
+
+### Documentation
+- [ReqnRoll Documentation](https://reqnroll.net/) - BDD framework
+- [Playwright .NET Docs](https://playwright.dev/dotnet/) - Browser automation
+- [Allure Framework](https://docs.qameta.io/allure/) - Test reporting
+- [Axe-core Rules](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md) - Accessibility rules
+- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/) - Accessibility standards
+- [NUnit Documentation](https://docs.nunit.org/) - Test framework
+
+### Internal Documentation
+- **MCPContext.md** - Detailed project standards and guidelines
+- **.github/copilot-instructions.md** - AI assistant guidelines
+- **.github/instructions/** - Path-specific development instructions
+
+### Learning Resources
+- [C# Best Practices](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/)
+- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+- [BDD with Gherkin](https://cucumber.io/docs/gherkin/)
+- [Accessibility Testing Guide](https://www.w3.org/WAI/test-evaluate/)
+
+---
+
+## 📊 Key Dependencies
+
+### Core Testing Framework
+- **Reqnroll** (2.3.0) - BDD framework (SpecFlow successor)
+- **NUnit** (3.14.0) - Test runner
+- **Playwright** (1.47.0) - Browser automation
+- **Playwright.Axe** (1.3.0) - Accessibility testing
+
+### Assertion and Validation
+- **FluentAssertions** (6.12.1) - Fluent assertion library
+- **Then** (1.0.3) - Additional assertion extensions
+
+### Reporting
+- **Allure.Reqnroll** (2.12.1) - Allure integration
+
+### External Integrations  
+- **MongoDB.Driver** - Database client
+- **Azure.Identity** (1.12.1) - Azure authentication
+- **Otp.NET** (1.4.0) - OTP generation
+
+### Utilities
+- **DotNetEnv** (3.1.1) - .env file support
+- **Newtonsoft.Json** - JSON serialization
+- **Microsoft.Extensions.Configuration** - Configuration management
+
+For complete dependencies, see `Playwright.E2ETests.csproj`.
+
+---
+

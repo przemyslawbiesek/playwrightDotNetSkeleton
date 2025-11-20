@@ -28,7 +28,6 @@ public class WpPocztaSteps : BaseUiStepDefinitions
     {
         await _wpHomePage.NavigateAsync();
         await _wpHomePage.AcceptCookiesIfPresentAsync();
-   //     await TrackAccessibilityAsync(_wpHomePage.GetPage());
     }
 
     [When(@"I click on the Poczta link")]
