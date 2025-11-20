@@ -1,0 +1,18 @@
+{
+  "BaseUrl": "http://web.local.bitraft.io:3000/",
+  "ApiBaseUrl": "http://web.local.bitraft.io:7100",
+  "MessagesBackendUrl": "http://messages.local.bitraft.io:8085",
+
+  "XApiKey": "27f7c50c-1e75-4d53-bc9f-43a909198669",
+  "XConsumerApplicationId8": "some-unique-identifier-from-apigee-8" ,
+  "XConsumerApplicationId2": "some-unique-identifier-from-apigee-2" ,
+  "XConsumerApplicationId3": "some-unique-identifier-from-apigee-3" ,
+  "XNhswappKey": "testmessagingserviceapikey",
+  "MongoDbUrl": "mongodb://localhost:27017",
+  "DbName": "development",
+  "Collections": {
+    "Consent": "consent",
+    "Info": "info",
+    "Messages": "messages"
+  }
+}

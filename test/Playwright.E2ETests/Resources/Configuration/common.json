@@ -1,0 +1,13 @@
+{
+  "ScreenshotsDirectory": "Screenshots",
+  "AccessibilityDirectory": "AccessibilityReport",
+  "TracesDirectory": "Traces",
+  "AccessibilityTags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "Headless": "false",
+  "AutoAccessibilityTracking": true
+}
