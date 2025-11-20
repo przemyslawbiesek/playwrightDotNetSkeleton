@@ -5,5 +5,5 @@ using NUnit.Framework;
 
 // NUnit parallelization
 [assembly: Parallelizable(ParallelScope.All)]
-[assembly: LevelOfParallelism(1)]
+[assembly: LevelOfParallelism(3)]
 

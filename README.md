@@ -23,10 +23,31 @@ The solution consists of one project:
 
 1. Clone the repository
 2. Open the solution file `PlaywrightTests.sln` in Visual Studio/Rider
+3. Configure environment settings (see Configuration section below)
 4. Install Node.js dependencies for accessibility testing
 5. Install Playwright browsers
 6. Build the solution
-7. Setup environment variables
+7. Run tests
+
+### Configuration
+
+This project uses `.env` files for configuration. To get started:
+
+```bash
+# Copy the example configuration
+cp .env.example .env
+
+# Edit .env with your local settings
+# See CONFIGURATION.md for all available options
+```
+
+**Key configuration files:**
+- `.env` - Your local configuration (git-ignored)
+- `.env.example` - Template with all available options
+- `.env.uat` - UAT environment configuration
+
+For complete configuration documentation, see [CONFIGURATION.md](CONFIGURATION.md).
+
 
 ### Installing Node.js Dependencies
 

@@ -1,13 +1,11 @@
 using Microsoft.Playwright;
 using Playwright.E2ETests.Configuration;
-using Playwright.E2ETests.Configuration.Environment;
 
 namespace Playwright.E2ETests.Browser;
 
 public class BrowserManager
 {
-    private static readonly bool Headless =
-        bool.Parse(EnvironmentVariableReader.GetValue(EnvironmentVariableName.Headless) ?? "false");
+    private static readonly bool Headless = bool.Parse(ConfigurationManager.GetCommon().Headless ?? "false");
 
     private readonly BrowserConfiguration _configuration;
     private readonly IPlaywright _playwright;

@@ -124,18 +124,10 @@ public class WpPocztaSteps : BaseUiStepDefinitions
     {
         var isDisplayed = await _wpPocztaRegistrationPage.IsRegistrationPageDisplayedAsync();
         var url = _wpPocztaRegistrationPage.GetPageUrl();
-
         WpPocztaValidator.ValidateRegistrationPageDisplayed(isDisplayed, url);
-
-        // Track accessibility on the registration page
-     //   await TrackAccessibilityAsync(_wpPocztaRegistrationPage.GetPage());
     }
 
-    /// <summary>
-    /// Initialize accessibility listener for a new page/tab
-    /// This is needed when a link opens a new tab, as the automatic listener
-    /// is only attached to the original page created during setup
-    /// </summary>
+
     private void InitializeAccessibilityListenerForNewPage(IPage page)
     {
         var listener = new AccessibilityPageEventListener(page, AccessibilityHelper, CustomTestContext);

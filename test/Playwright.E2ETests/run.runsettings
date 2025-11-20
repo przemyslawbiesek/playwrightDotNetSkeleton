@@ -2,11 +2,5 @@
 <RunSettings>
   <RunConfiguration>
     <MaxCpuCount>2</MaxCpuCount>
-    <EnvironmentVariables>
-      <Environment>local</Environment>
-      <BrowserConfiguration>chrome</BrowserConfiguration>
-      <Headless>false</Headless>
-      <DOTNET_ENVIRONMENT>Development</DOTNET_ENVIRONMENT>
-    </EnvironmentVariables>
   </RunConfiguration>
 </RunSettings>
