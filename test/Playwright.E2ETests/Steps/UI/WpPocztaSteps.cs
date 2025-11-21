@@ -14,13 +14,11 @@ public class WpPocztaSteps : BaseUiStepDefinitions
     private WpPocztaRegistrationPage _wpPocztaRegistrationPage;
     private readonly WpHomePage _wpHomePage;
 
-    public WpPocztaSteps(CustomTestContext context, IPage page, WpHomePage wpHomePage)
-        : base(context, page)
+    public WpPocztaSteps(CustomTestContext context, IPage page) : base(context, page)
     {
-        _wpHomePage = wpHomePage;
-        // WpPocztaLoginPage will be initialized after navigating to new tab
-        _wpPocztaLoginPage = null!;
-        _wpPocztaRegistrationPage = null!;
+        _wpHomePage = new WpHomePage(page);
+        _wpPocztaLoginPage = new WpPocztaLoginPage(page);
+        _wpPocztaRegistrationPage = new WpPocztaRegistrationPage(page);
     }
 
     [Given(@"I navigate to WP\.pl homepage")]
@@ -40,7 +38,7 @@ public class WpPocztaSteps : BaseUiStepDefinitions
         _wpPocztaLoginPage = new WpPocztaLoginPage(pocztaPage);
 
         // Initialize accessibility listener for the new page
-        InitializeAccessibilityListenerForNewPage(pocztaPage);
+    //    InitializeAccessibilityListenerForNewPage(pocztaPage);
 
         // Accept cookies on the Poczta page if present
         await _wpPocztaLoginPage.AcceptCookiesIfPresentAsync();
@@ -106,7 +104,7 @@ public class WpPocztaSteps : BaseUiStepDefinitions
             // New page/tab opened - use it
             await newPage.WaitForLoadStateAsync(LoadState.Load);
             _wpPocztaRegistrationPage = new WpPocztaRegistrationPage(newPage);
-            InitializeAccessibilityListenerForNewPage(newPage);
+         //   InitializeAccessibilityListenerForNewPage(newPage);
             Console.WriteLine($"Switched to registration page in new tab: {newPage.Url}");
         }
         catch (TimeoutException)
@@ -127,11 +125,11 @@ public class WpPocztaSteps : BaseUiStepDefinitions
     }
 
 
-    private void InitializeAccessibilityListenerForNewPage(IPage page)
-    {
-        var listener = new AccessibilityPageEventListener(page, AccessibilityHelper, CustomTestContext);
-        listener.Attach();
-        Console.WriteLine($"WpPocztaSteps: Accessibility listener attached to new page - {page.Url}");
-    }
+    // private void InitializeAccessibilityListenerForNewPage(IPage page)
+    // {
+    //     var listener = new AccessibilityPageEventListener(page, AccessibilityHelper, CustomTestContext);
+    //     listener.Attach();
+    //     Console.WriteLine($"WpPocztaSteps: Accessibility listener attached to new page - {page.Url}");
+    // }
 }
 

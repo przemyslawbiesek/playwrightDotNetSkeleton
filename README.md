@@ -316,6 +316,39 @@ Rich HTML reports with comprehensive test results:
 ✅ **Execution timeline** - Test duration and sequence  
 ✅ **Trends and statistics** - Historical data and metrics  
 
+## Automatic Accessibility Testing
+
+### How It Works
+- **Fully automatic** - accessibility checks run on ALL pages without manual intervention
+- Tracks initial page, new tabs, and all page navigations automatically
+- Uses Playwright's browser context events to detect and monitor new pages/tabs
+- Global deduplication prevents duplicate scans of the same URL across parallel tests
+- Each page is scanned only once per URL, regardless of how many tests access it
+
+### Multi-Page/Tab Support
+- When tests open new tabs or windows, accessibility listeners are **automatically attached**
+- No manual setup needed in step definitions or page objects
+- Works seamlessly with popup windows, new tabs, and in-page navigation
+- Example: WP.pl test opens 3 pages → all 3 are automatically scanned
+
+### Configuration
+- Enable/disable: `AUTO_ACCESSIBILITY_TRACKING=true/false` in `.env`
+- WCAG Levels: `ACCESSIBILITY_TAGS=wcag2a,wcag2aa,wcag21a,wcag21aa`
+- Control which WCAG standards to check against
+
+### Reports
+- Axe-core WCAG reports automatically generated for each page
+- Individual page reports: `AccessibilityReport/{Scenario}/{Page}/`
+- Consolidated report: `AccessibilityReport/{Scenario}/consolidated-accessibility-report.html`
+- Reports attached to Allure automatically
+- Accessibility failures are **reported** but **don't fail tests**
+
+**WCAG Levels Checked:**
+- WCAG 2.0 Level A (`wcag2a`)
+- WCAG 2.0 Level AA (`wcag2aa`)
+- WCAG 2.1 Level A (`wcag21a`)
+- WCAG 2.1 Level AA (`wcag21aa`)
+
 #### Generate and View Reports
 
 ```bash

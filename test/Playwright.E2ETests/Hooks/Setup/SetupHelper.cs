@@ -72,12 +72,22 @@ public class SetupHelper
         var testContext = _objectContainer.Resolve<CustomTestContext>();
         var accessibilityHelper = (AccessibilityHelper)testContext.Get(CustomTestContext.Keys.AccessibilityHelper);
 
+        // Attach listener to initial page
         var listener = new AccessibilityPageEventListener(page, accessibilityHelper, testContext);
         listener.Attach();
 
         // Register the listener so it can be detached later if needed
         _objectContainer.RegisterInstanceAs(listener);
 
-        Console.WriteLine("SetupHelper: Automatic accessibility tracking initialized");
+        // Listen for new pages/tabs created in the browser context and attach listeners to them
+        page.Context.Page += async (_, newPage) =>
+        {
+            Console.WriteLine($"SetupHelper: New page/tab detected - {newPage.Url}");
+            var newPageListener = new AccessibilityPageEventListener(newPage, accessibilityHelper, testContext);
+            newPageListener.Attach();
+            Console.WriteLine($"SetupHelper: Accessibility listener attached to new page/tab - {newPage.Url}");
+        };
+
+        Console.WriteLine("SetupHelper: Automatic accessibility tracking initialized for all pages");
     }
 }

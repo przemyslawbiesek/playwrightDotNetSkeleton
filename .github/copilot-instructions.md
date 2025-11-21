@@ -147,21 +147,6 @@ public class LoginValidator
 - No assertions in Page Objects or Step Definitions (use Validators)
 - Use `CustomTestContext` to share data between steps in a scenario
 
-**Reports:**
-- Axe-core WCAG reports automatically generated
-- Individual page reports: `AccessibilityReport/{Scenario}/{Page}/`
-- Consolidated report: `AccessibilityReport/{Scenario}/consolidated-accessibility-report.html`
-- Reports attached to Allure automatically
-- Accessibility failures are **reported** but **don't fail tests**
-
-**WCAG Levels Checked:**
-- WCAG 2.0 Level A (`wcag2a`)
-- WCAG 2.0 Level AA (`wcag2aa`)
-- WCAG 2.1 Level A (`wcag21a`)
-- WCAG 2.1 Level AA (`wcag21aa`)
-
-Configure via `ACCESSIBILITY_TAGS` in `.env` file.
-
 ## Running Tests
 
 ### Basic Commands
