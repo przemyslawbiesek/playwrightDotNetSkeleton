@@ -1,0 +1,45 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+node_modules/
+
+# Environment variables
+.env
+.env.local
+!.env.example
+!.env.uat
+!.env.staging
+!.env.production
+
+### Rider ###
+# User-specific stuff
+.idea/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+**/TestResults/
+**/Features/**/*.cs
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# File-based project format
+*.iws
+
+test/Playwright.E2ETests/.DS_Store
+test/.DS_Store
+.DS_Store

@@ -1,0 +1,9 @@
+{
+  "name": "playwright-e2e-tests",
+  "version": "1.0.0",
+  "description": "Accessibility reporting for E2E tests",
+  "private": true,
+  "devDependencies": {
+    "axe-html-reporter": "^2.2.11"
+  }
+}
